@@ -65,6 +65,11 @@ public class EmployeeController {
             addDepartmentsAndPositions(model);
             return "employees/create";
         }
+        if (employee.getEmail() == null || !employee.getEmail().endsWith("@company.ru")) {
+            model.addAttribute("errorMessage", "E-mail должен оканчиваться на @company.ru");
+            addDepartmentsAndPositions(model);
+            return "employees/create";
+        }
         if (employee.getDepartment() == null || employee.getDepartment().getDepartmentName() == null ||
                 employee.getDepartment().getDepartmentName().isEmpty()) {
             model.addAttribute("errorMessage", "Необходимо выбрать отдел.");
@@ -103,6 +108,11 @@ public class EmployeeController {
     @PostMapping("/update/{id}")
     public String updateEmployee(@PathVariable("id") Integer id, @ModelAttribute("employee") Employee employee, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            addDepartmentsAndPositions(model);
+            return "employees/edit";
+        }
+        if (employee.getEmail() == null || !employee.getEmail().endsWith("@company.ru")) {
+            model.addAttribute("errorMessage", "E-mail должен оканчиваться на @company.ru");
             addDepartmentsAndPositions(model);
             return "employees/edit";
         }
